@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>訂單查詢｜玖號追星日常 NO.9</title>
+<meta name="description" content="輸入訂單碼或預約時填寫的手機號碼，即可查看租期、機型、金額與目前處理進度。">
+<meta name="theme-color" content="#13262B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2313262B'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='26' fill='%23F2ECDF' text-anchor='middle'%3EN9%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div><span class="tag">TAIPEI · 中山</span>　兩日起租 · 面交約 10 分鐘 · 押金當日退</div>
+    <div>官方 LINE <a href="#" data-line-link data-line-id>@no9daily</a></div>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="玖號追星日常 首頁">
+      <span class="brand-mark">Nº9</span>
+      <span class="brand-txt"><strong data-brand>玖號追星日常</strong><span>NO.9</span></span>
+    </a>
+    <nav class="nav" aria-label="主選單">
+      <a href="index.html#booking">線上預約</a>
+      <a href="index.html#plans">方案價格</a>
+      <a href="index.html#handover">取機還機</a>
+      <a href="index.html#flow">租借流程</a>
+      <a href="faq.html">常見問題</a>
+    </nav>
+    <div class="header-cta">
+      <span class="header-line"><i class="dot"></i>LINE 回覆最慢 2 小時</span>
+      <a class="btn btn-sm" href="index.html#booking">開始預約</a>
+      <button class="burger" type="button" aria-label="開啟選單" aria-expanded="false"><span style="display:block;width:16px;height:1px;background:#13262B;box-shadow:0 5px 0 #13262B,0 -5px 0 #13262B"></span></button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="page-hero">
+  <div class="wrap">
+    <p class="breadcrumb"><a href="index.html">首頁</a> / 訂單查詢</p>
+    <p class="eyebrow">ORDER TRACKING</p>
+    <h1>你的預約，走到哪了？</h1>
+    <p>輸入訂單碼（例：NR261123-A1B2）或預約時填的手機號碼。查到的資料與你送出時相同，若金額有異動，小編會先用 LINE 通知你。</p>
+  </div>
+</section>
+<section class="page-body">
+  <div class="wrap" style="max-width:720px">
+    <div class="lookup">
+      <p class="eyebrow" style="margin-bottom:16px">FIND MY RESERVATION</p>
+      <form id="lookupForm" novalidate>
+        <div class="field">
+          <label for="lookupInput">訂單碼或手機號碼</label>
+          <input class="input" id="lookupInput" type="text" placeholder="NR261123-A1B2　或　0912-345-678" autocomplete="off">
+        </div>
+        <button class="btn btn-wide" type="submit">查詢我的預約 <span class="arr">→</span></button>
+      </form>
+      <p class="hint-line" style="margin-top:14px">找不到訂單？訂單資料保存在預約當下的瀏覽器；換手機或清除瀏覽器資料後可能查不到，請加 LINE 由小編協助。</p>
+    </div>
+    <div id="lookupResult" aria-live="polite"></div>
+    <div class="notice" style="margin-top:26px"><b>匯款後要做什麼？</b><br>把匯款截圖與訂單碼傳到官方 LINE，小編會回覆「已保留」並與你約定取機時間。訂金 NT$500 需於 24 小時內完成。</div>
+  </div>
+</section></main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand" style="margin-bottom:14px">
+          <span class="brand-mark" style="border-color:rgba(242,236,223,.5);color:#F2ECDF">Nº9</span>
+          <span class="brand-txt"><strong>玖號追星日常</strong><span style="color:#8E948B">NO.9</span></span>
+        </div>
+        <p class="foot-note">演唱會長焦手機租借，台北中山面交。<br>把山頂的距離，收進觀景窗裡。</p>
+      </div>
+      <div>
+        <h5>Services</h5>
+        <ul class="foot-links">
+          <li><a href="index.html#booking">線上預約</a></li>
+          <li><a href="index.html#plans">方案與價格</a></li>
+          <li><a href="faq.html">常見問題</a></li>
+          <li><a href="coupons.html">優惠券</a></li>
+          <li><a href="order.html">訂單查詢</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contact</h5>
+        <ul class="foot-links">
+          <li><a href="#" data-line-link>官方 LINE</a></li>
+          <li><a href="contact.html">聯繫客服</a></li>
+          <li><a href="mailto:hello@no9daily.tw" data-email>hello@no9daily.tw</a></li>
+          <li><span data-phone>0912-345-678</span></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Pick up</h5>
+        <p class="foot-note">捷運中山站 一號出口<br>週一至週日 <span data-hours>11:00 – 22:00</span><br>取機 20:00 後 · 還機 20:00 前</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 NO.9. All rights reserved.</span>
+      <span>本站為示範網站，價格與條款可依實際營運調整。</span>
+    </div>
+  </div>
+</footer>
+
+<div class="qm">
+  <div class="qm-panel" role="menu" aria-label="快速服務">
+    <div class="hd">QUICK SERVICE</div>
+    <a href="index.html#booking" role="menuitem"><span class="ic">＋</span>線上預約</a>
+    <a href="index.html#handover" role="menuitem"><span class="ic">◎</span>取機與還機</a>
+    <a href="index.html#handover" role="menuitem"><span class="ic">⌖</span>門市地點</a>
+    <a href="faq.html" role="menuitem"><span class="ic">?</span>Q&amp;A 常見問題</a>
+    <a href="coupons.html" role="menuitem"><span class="ic">%</span>優惠券</a>
+    <a href="order.html" role="menuitem"><span class="ic">#</span>訂單查詢</a>
+    <a href="contact.html" role="menuitem"><span class="ic">✆</span>聯繫客服</a>
+  </div>
+  <button class="qm-btn" type="button" aria-expanded="false" aria-label="開啟服務選單"><span class="ic"></span><span class="lbl">服務選單</span></button>
+</div>
+
+<script src="assets/js/config.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/pages.js"></script>
+</body>
+</html>
