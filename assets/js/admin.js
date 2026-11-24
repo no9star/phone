@@ -10,6 +10,28 @@
   if (!D.stock || typeof D.stock !== "object") D.stock = {};
   const msg = (t) => { $("#msg").textContent = t; };
 
+  /* ---------- 管理密碼 ---------- */
+  const CODE = "0909";
+  const lockEl = document.getElementById("lock");
+  function unlock() {
+    if (lockEl) lockEl.remove();
+    document.body.classList.remove("locked");
+  }
+  if (lockEl) {
+    if (sessionStorage.getItem("no9_admin_ok") === "1") {
+      unlock();
+    } else {
+      const go = () => {
+        const v = ($("#lockCode").value || "").trim();
+        if (v === CODE) { sessionStorage.setItem("no9_admin_ok", "1"); unlock(); }
+        else { $("#lockErr").textContent = "密碼不對，再試一次"; $("#lockCode").value = ""; }
+      };
+      $("#lockGo").addEventListener("click", go);
+      $("#lockCode").addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+      setTimeout(() => { const el = $("#lockCode"); if (el) el.focus(); }, 300);
+    }
+  }
+
   /* tabs */
   $$("#tabs button").forEach((b) => b.addEventListener("click", () => {
     $$("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
