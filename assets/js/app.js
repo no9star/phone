@@ -13,6 +13,54 @@
     });
     const note = document.getElementById("plansNote");
     if (note && CT.plansNote) note.textContent = CT.plansNote;
+    renderViews();
+  }
+
+  function escH(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+  }
+  function ytId(url) {
+    const m = String(url || "").match(/(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : "";
+  }
+  function renderViews() {
+    const boxes = document.querySelectorAll("[data-views]");
+    if (!boxes.length) return;
+    const list = Array.isArray(CT.views) ? CT.views : [];
+    boxes.forEach((box) => {
+      const max = Number(box.dataset.views) || 99;
+      if (!list.length) {
+        box.innerHTML = '<div class="view-empty">還沒有上傳視角影片，從管理後台「演唱會視角」新增就會出現在這裡。</div>';
+        return;
+      }
+      box.innerHTML = list.slice(0, max).map((v) => {
+        const id = ytId(v.video);
+        const poster = v.poster || (id ? "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg" : "");
+        const media = id
+          ? '<button class="view-media" type="button" data-play="' + id + '" aria-label="播放 ' + escH(v.title || v.seat) + '">' +
+              (poster ? '<img src="' + escH(poster) + '" alt="" loading="lazy">' : "") +
+              '<span class="view-play">▶</span></button>'
+          : '<div class="view-media is-empty"><span class="vseat">' + escH(v.seat || v.venue || "視角") + '</span><small>影片準備中</small></div>';
+        return '<article class="view-card">' + media +
+          '<div class="view-body">' +
+            '<div class="view-tags"><span>' + escH(v.venue) + '</span><span>' + escH(v.seat) + '</span></div>' +
+            '<h3>' + escH(v.title) + '</h3>' +
+            '<p>' + escH(v.desc) + '</p>' +
+            '<div class="view-foot"><span>' + escH(v.model) + '</span>' +
+              (id ? '<a class="link-u" href="https://www.youtube.com/watch?v=' + id + '" target="_blank" rel="noopener">YouTube 看</a>' : "") +
+            '</div>' +
+          '</div></article>';
+      }).join("");
+      box.querySelectorAll("[data-play]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.play;
+          const wrap = document.createElement("div");
+          wrap.className = "view-media playing";
+          wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0" title="演唱會視角" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+          btn.replaceWith(wrap);
+        });
+      });
+    });
   }
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));

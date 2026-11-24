@@ -181,6 +181,140 @@
     renderCoupons(); msg("已新增，記得儲存");
   });
 
+  /* ---------- 演唱會視角 ---------- */
+  function renderViewsEdit() {
+    const box = $("#viewList");
+    if (!Array.isArray(D.views)) D.views = [];
+    if (!D.views.length) { box.innerHTML = '<p class="sub">還沒有任何視角，按下面新增。</p>'; return; }
+    box.innerHTML = D.views.map((v, i) =>
+      '<div class="row-card">' +
+        '<div class="row-head"><b>視角 ' + (i + 1) + '</b><button class="mini del" type="button" data-del-view="' + i + '">刪除</button></div>' +
+        '<div class="grid2">' +
+          '<div class="f"><label>場館</label><input data-vf="venue" data-i="' + i + '" value="' + esc(v.venue) + '"></div>' +
+          '<div class="f"><label>座位區</label><input data-vf="seat" data-i="' + i + '" value="' + esc(v.seat) + '"></div>' +
+          '<div class="f" style="grid-column:1/-1"><label>標題</label><input data-vf="title" data-i="' + i + '" value="' + esc(v.title) + '"></div>' +
+          '<div class="f" style="grid-column:1/-1"><label>說明</label><textarea data-vf="desc" data-i="' + i + '">' + esc(v.desc) + '</textarea></div>' +
+          '<div class="f"><label>使用的機型</label><input data-vf="model" data-i="' + i + '" value="' + esc(v.model) + '"></div>' +
+          '<div class="f"><label>YouTube 網址</label><input data-vf="video" data-i="' + i + '" placeholder="https://www.youtube.com/watch?v=..." value="' + esc(v.video) + '"></div>' +
+          '<div class="f" style="grid-column:1/-1"><label>自訂縮圖網址（可留空，會自動抓 YouTube 縮圖）</label><input data-vf="poster" data-i="' + i + '" value="' + esc(v.poster) + '"></div>' +
+        '</div>' +
+      '</div>'
+    ).join("");
+    $$("[data-vf]").forEach((el) => el.addEventListener("input", () => {
+      D.views[Number(el.dataset.i)][el.dataset.vf] = el.value; msg("有未儲存的修改");
+    }));
+    $$("[data-del-view]").forEach((b) => b.addEventListener("click", () => {
+      if (!confirm("刪除這個視角？")) return;
+      D.views.splice(Number(b.dataset.delView), 1); renderViewsEdit(); msg("已刪除，記得儲存");
+    }));
+  }
+  $("#addView").addEventListener("click", () => {
+    D.views = D.views || [];
+    D.views.push({ id: "v" + Date.now().toString(36), venue: "", seat: "", model: "", title: "新的視角", desc: "", video: "", poster: "" });
+    renderViewsEdit(); msg("已新增，記得儲存");
+  });
+
+  /* ---------- 顧客與成本 ---------- */
+  function money(n) { return "NT$" + Math.round(n).toLocaleString("en-US"); }
+  function readOrders() {
+    try { return JSON.parse(localStorage.getItem("no9_orders_v1") || "[]"); } catch (e) { return []; }
+  }
+  function crmStats() {
+    if (!D.costs) D.costs = { monthly: 0, startDate: "", models: {} };
+    const c = D.costs; c.models = c.models || {};
+    const orders = readOrders().filter((o) => o.status !== "已取消");
+    const revenue = orders.reduce((s, o) => s + Math.max(0, (Number(o.total) || 0) - (Number(o.deposit) || 0)), 0);
+    const invest = (D.models || []).reduce((s, m) => s + (Number(c.models[m.id]) || 0), 0);
+    const start = c.startDate ? new Date(c.startDate + "T00:00:00") : null;
+    const now = new Date();
+    const months = start ? Math.max(1, Math.ceil((now - start) / (1000 * 60 * 60 * 24 * 30.4))) : 1;
+    const runCost = (Number(c.monthly) || 0) * months;
+    const totalCost = invest + runCost;
+    const remain = Math.max(0, totalCost - revenue);
+    const pct = totalCost > 0 ? Math.min(100, Math.round((revenue / totalCost) * 100)) : 0;
+    const d30 = new Date(now.getTime() - 30 * 864e5);
+    const rev30 = orders.filter((o) => o.created && new Date(o.created) >= d30)
+      .reduce((s, o) => s + Math.max(0, (Number(o.total) || 0) - (Number(o.deposit) || 0)), 0);
+    const perDay = rev30 > 0 ? rev30 / 30 : (orders.length ? revenue / Math.max(30, months * 30.4) : 0);
+    const daysLeft = perDay > 0 ? Math.ceil(remain / perDay) : null;
+    const eta = daysLeft != null ? new Date(now.getTime() + daysLeft * 864e5) : null;
+    return { orders, revenue, invest, runCost, totalCost, remain, pct, rev30, perDay, daysLeft, eta, months };
+  }
+  function renderCrm() {
+    const st = crmStats();
+    const c = D.costs;
+    const etaTxt = st.eta ? (st.eta.getFullYear() + "/" + String(st.eta.getMonth() + 1).padStart(2, "0") + "/" + String(st.eta.getDate()).padStart(2, "0")) : "—";
+    $("#crmDash").innerHTML =
+      '<div class="kpis">' +
+        '<div class="kpi"><div class="k">累計營收</div><b>' + money(st.revenue) + '</b></div>' +
+        '<div class="kpi"><div class="k">累計成本</div><b>' + money(st.totalCost) + '</b></div>' +
+        '<div class="kpi"><div class="k">回本進度</div><b>' + st.pct + '%</b></div>' +
+        '<div class="kpi"><div class="k">尚差</div><b>' + money(st.remain) + '</b></div>' +
+      '</div>' +
+      '<div class="pbar"><i style="width:' + st.pct + '%"></i></div>' +
+      '<p class="hint" style="font-size:12px;color:#5A5E80">' +
+        (st.remain <= 0
+          ? '已經回本，之後的租金都是淨收入。'
+          : (st.daysLeft != null
+              ? (st.daysLeft > 3650
+                  ? '近 30 天營收 ' + money(st.rev30) + '，平均每天 ' + money(st.perDay) + '。以目前速度要超過 10 年才回本，建議先確認購機成本與每月固定成本是否填對，或增加曝光與場次。'
+                  : '近 30 天營收 ' + money(st.rev30) + '，平均每天 ' + money(st.perDay) + '。照這個速度，還要約 <b>' + st.daysLeft + ' 天</b>（約 ' + (st.daysLeft / 30).toFixed(1) + ' 個月），預估 <b>' + etaTxt + '</b> 回本。')
+              : '目前還沒有足夠的營收紀錄可以估算，先完成一兩筆預約，或到下面填入成本。')) +
+      '</p>' +
+      '<p class="hint" style="font-size:11.5px;color:#878BA8">計算方式：累計營收 = 訂單總額 − 押金（押金不算收入）；累計成本 = 各機型購機成本 ＋ 每月固定成本 × 經營月數（' + st.months + ' 個月）。</p>';
+    $("#crmCost").innerHTML =
+      '<div class="grid2" style="margin-top:14px">' +
+        '<div class="f"><label>每月固定成本（保險、耗材、運費補貼…）</label><input type="number" id="crmMonthly" value="' + (Number(c.monthly) || 0) + '"></div>' +
+        '<div class="f"><label>開始營運日</label><input type="date" id="crmStart" value="' + esc(c.startDate || "") + '"></div>' +
+      '</div>' +
+      '<div class="grid2">' +
+        (D.models || []).map((m) => '<div class="f"><label>' + esc(m.name) + ' 購機成本</label><input type="number" data-cost-model="' + m.id + '" value="' + (Number(c.models[m.id]) || 0) + '"></div>').join("") +
+      '</div>' +
+      '<p class="hint" style="font-size:11.5px;color:#5A5E80">目前投入：購機 ' + money(st.invest) + ' ＋ 營運 ' + money(st.runCost) + ' ＝ ' + money(st.totalCost) + '</p>';
+    $("#crmMonthly").addEventListener("change", (e) => { D.costs.monthly = Number(e.target.value) || 0; renderCrm(); msg("有未儲存的修改"); });
+    $("#crmStart").addEventListener("change", (e) => { D.costs.startDate = e.target.value; renderCrm(); msg("有未儲存的修改"); });
+    $$("[data-cost-model]").forEach((el) => el.addEventListener("change", () => {
+      D.costs.models[el.dataset.costModel] = Number(el.value) || 0; renderCrm(); msg("有未儲存的修改");
+    }));
+    renderCrmList();
+  }
+  function renderCrmList() {
+    if (!D.customers) D.customers = {};
+    const q = ($("#crmSearch").value || "").trim().toLowerCase();
+    const map = {};
+    readOrders().forEach((o) => {
+      if (o.status === "已取消") return;
+      const p = o.phone || "未填電話";
+      const row = map[p] || (map[p] = { phone: p, name: o.name || "", line: o.line || "", email: o.email || "", count: 0, rev: 0, last: "" });
+      row.count += 1;
+      row.rev += Math.max(0, (Number(o.total) || 0) - (Number(o.deposit) || 0));
+      if ((o.start || "") > row.last) row.last = o.start || "";
+      row.name = row.name || o.name || "";
+    });
+    let rows = Object.values(map).sort((a, b) => b.rev - a.rev);
+    if (q) rows = rows.filter((r) => (r.name + r.phone + r.line).toLowerCase().indexOf(q) > -1);
+    if (!rows.length) {
+      $("#crmList").innerHTML = '<p class="sub" style="margin-top:10px">這台裝置還沒有預約紀錄。客人在這台電腦／手機完成預約後就會出現在這裡。</p>';
+      return;
+    }
+    $("#crmList").innerHTML =
+      '<table class="crm"><thead><tr><th>顧客</th><th>聯絡</th><th>預約 / 營收</th><th>最近租期</th><th style="width:38%">備註</th></tr></thead><tbody>' +
+      rows.map((r) =>
+        '<tr><td><b>' + esc(r.name || "—") + '</b><div style="font-size:11px;color:#7A80A0">' + esc(r.phone) + '</div></td>' +
+        '<td style="font-size:11px;color:#5A5E80">' + (r.line ? "LINE " + esc(r.line) + "<br>" : "") + esc(r.email || "") + '</td>' +
+        '<td>' + r.count + ' 筆<div style="font-size:11px;color:#5A5E80">' + money(r.rev) + '</div></td>' +
+        '<td style="font-size:11px">' + esc(r.last || "—") + '</td>' +
+        '<td><textarea class="crm-note" data-note="' + esc(r.phone) + '" placeholder="例如：易碎體質、要提醒帶證件、喜歡哪一支">' + esc((D.customers[r.phone] && D.customers[r.phone].note) || "") + '</textarea></td></tr>'
+      ).join("") + '</tbody></table>';
+    $$("[data-note]").forEach((el) => el.addEventListener("input", () => {
+      const key = el.dataset.note;
+      D.customers[key] = D.customers[key] || {};
+      D.customers[key].note = el.value;
+      msg("備註未儲存");
+    }));
+  }
+  $("#crmSearch").addEventListener("input", renderCrmList);
+
   /* ---------- save / download / reset ---------- */
   $("#saveBtn").addEventListener("click", () => {
     localStorage.setItem(KEY, JSON.stringify(D));
@@ -200,5 +334,5 @@
     localStorage.removeItem(KEY); location.reload();
   });
 
-  renderModels(); renderStock(); renderFaq(); renderCoupons();
+  renderModels(); renderStock(); renderFaq(); renderCoupons(); renderViewsEdit(); renderCrm();
 })();
