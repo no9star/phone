@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /manage-no9-x7k2.html
+Allow: /
