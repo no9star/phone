@@ -5,6 +5,15 @@
   "use strict";
 
   const CFG = window.SITE_CONFIG || {};
+  const CT = window.SITE_CONTENT || {};
+  function applyContent() {
+    document.querySelectorAll("[data-c]").forEach((el) => {
+      const k = el.dataset.c;
+      if (CT[k]) el.textContent = CT[k];
+    });
+    const note = document.getElementById("plansNote");
+    if (note && CT.plansNote) note.textContent = CT.plansNote;
+  }
   const $ = (s, r) => (r || document).querySelector(s);
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
   const NT = (n) => "NT$" + Number(n || 0).toLocaleString("en-US");
@@ -109,6 +118,31 @@
     });
   }
 
+  /* ---------------- plans table ---------------- */
+  const planBody = document.getElementById("planBody");
+  if (planBody) {
+    const rows = MODELS.map((m) => '<tr><td data-label="機型"><b>' + m.name + '</b><small>' + m.spec + '</small></td>' +
+      '<td data-label="日租金"><b>' + NT(m.price) + '</b></td>' +
+      '<td data-label="第 3 天起">' + NT(m.price3) + ' / 天</td>' +
+      '<td data-label="押金">' + NT(m.deposit) + '</td>' +
+      '<td data-label="適合座位">' + (m.note || "—") + '</td></tr>').join("");
+    const lensRows = MODELS.filter((m) => m.lens).map((m) => '<tr><td data-label="機型"><b>' + m.lens.name + '</b><small>搭配 ' + m.name + '，數量有限</small></td>' +
+      '<td data-label="日租金"><b>' + NT(m.lens.price) + '</b></td>' +
+      '<td data-label="第 3 天起">依天數計</td><td data-label="押金">—</td>' +
+      '<td data-label="適合座位">' + (m.note || "—") + '</td></tr>').join("");
+    planBody.innerHTML = rows + lensRows;
+  }
+
+  /* ---------------- FAQ ---------------- */
+  function faqItem(it) {
+    return '<div class="faq-item"><button class="faq-q" type="button" aria-expanded="false">' + it.q +
+      '<span class="pm">＋</span></button><div class="faq-a"><div>' + it.a + '</div></div></div>';
+  }
+  $$("[data-faq]").forEach((box) => {
+    const limit = Number(box.dataset.faq) || 99;
+    box.innerHTML = FAQ.slice(0, limit).map(faqItem).join("");
+  });
+
   /* ---------------- accordions ---------------- */
   $$(".faq-item").forEach((item) => {
     const q = $(".faq-q", item);
@@ -126,6 +160,8 @@
   /* =========================================================
      Booking wizard
      ========================================================= */
+  applyContent();
+
   const wizard = $("#booking");
   if (!wizard) return;
 
@@ -164,8 +200,8 @@
     const lens = state.lens && m.lens ? m.lens.price * d : 0;
     const battery = state.battery ? 50 * d : 0;
     const rent = base + lens + battery;
-    const deposit = Math.round(m.deposit * (state.member ? 0.5 : 1));
-    const shipping = state.pickup === "post" ? 100 : 0;
+    const deposit = Math.round(m.deposit);
+    const shipping = state.pickup === "post" ? Number(CT.shippingFee || CFG.shippingFee || 250) : 0;
     const total = rent + deposit + shipping - state.couponOff;
     const due = Math.min(CFG.depositNow || 500, total);
     return { rent, base, lens, battery, deposit, shipping, total, due, balance: total - due, days: d };
@@ -300,7 +336,7 @@
       const sel = state.model === m.id;
       return (
         '<article class="model ' + (sel ? "sel " : "") + (sold ? "sold" : "") + '" data-id="' + m.id + '" tabindex="0" role="button" aria-pressed="' + sel + '" aria-disabled="' + sold + '">' +
-          '<div class="model-art">' + phoneSvg + '</div>' +
+          '<div class="model-art">' + (m.image ? '<img src="' + m.image + '" alt="' + m.name + '">' : phoneSvg) + '</div>' +
           '<div class="model-info">' +
             '<h4>' + m.name + ' <span class="badge ' + (sold ? "full" : stock === 1 ? "few" : "ok") + '">' + (sold ? "此檔期已滿" : "尚有 " + stock + " 台") + '</span></h4>' +
             '<div class="spec">' + m.spec + '</div>' +
@@ -440,7 +476,7 @@
       ["手機型號", m.name + (state.lens && m.lens ? " ＋ " + m.lens.name : "")],
       ["租金", NT(m.price) + " × 2 天" + (c.days > 2 ? " ＋ " + NT(m.price3) + " × " + (c.days - 2) + " 天" : "") + " = " + NT(c.base)],
       ["配件", c.lens + c.battery > 0 ? NT(c.lens + c.battery) : "無"],
-      ["押金", NT(c.deposit) + (state.member ? "（舊客半價）" : "")],
+      ["押金", NT(c.deposit)],
       ["取機方式", state.pickup === "post" ? "黑貓郵寄到府（運費 NT$100）" : "台北捷運中山站面交"],
       ["優惠折抵", state.couponOff > 0 ? "－ " + NT(state.couponOff) + "（" + state.coupon + "）" : "未使用"]
     ];
