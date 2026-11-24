@@ -858,3 +858,108 @@ body{
 .ticket .foot b{color:#5F549F}
 .coupon .off{color:#5F549F}
 .model.sel .pick{background:linear-gradient(135deg,#57508F,#8179C6)}
+
+/* =========================================================
+   V4 — 日落天空配色（藍紫 → 奶油 → 蜜桃）
+   ========================================================= */
+:root{
+  --paper:#EDE6EA;
+  --paper-soft:#FBF2EA;
+  --ink:#2B2F4C;
+  --ink-2:#4C5170;
+  --muted:#7A7F9B;
+  --line:rgba(43,47,76,.12);
+  --line-strong:rgba(43,47,76,.24);
+  --accent:#7C87C6;
+  --accent-deep:#5F6BA8;
+  --accent-soft:#E2E3F5;
+  --gold:#D89B7C;
+  --danger:#C97F79;
+  --ok:#7FA39A;
+}
+body{
+  background:#F3E4D9;
+  background-image:
+    radial-gradient(1200px 640px at 12% -10%, rgba(255,255,255,.75), transparent 62%),
+    radial-gradient(900px 520px at 88% 4%, rgba(198,212,240,.65), transparent 66%),
+    radial-gradient(1000px 620px at 50% 58%, rgba(255,244,232,.7), transparent 70%),
+    linear-gradient(180deg,#AEC2E6 0%,#C9D2EA 16%,#E9E4E6 34%,#F7E7D8 52%,#FAD6C0 72%,#F5BCA6 100%);
+  background-attachment:fixed;
+  color:#333856;
+}
+.topbar{background:rgba(255,255,255,.4);color:#3E4463;border-bottom:1px solid rgba(255,255,255,.55)}
+.site-header{background:rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.6)}
+.hero h1{white-space:pre-line;color:#232746;text-shadow:0 2px 26px rgba(255,255,255,.35)}
+.hero h1 em{color:#5F6BA8;-webkit-text-fill-color:#5F6BA8}
+.hero .lede{color:#414766}
+.stage-photo{filter:saturate(1.02) brightness(1.04) sepia(.06)}
+.stage-shade{background:linear-gradient(180deg,rgba(60,63,104,.02) 30%,rgba(96,72,96,.34) 100%)}
+.stage-top{color:rgba(255,255,255,.92)}
+.stage-bottom .t{color:#fff}
+.panel,.cal-side,.hand-card,.price-wrap,.lookup,.order-card,.coupon,.notice,.ticket,.step,.model,.page-body .card{
+  background:rgba(255,255,255,.66);
+  border-color:rgba(255,255,255,.8);
+  box-shadow:0 24px 48px -40px rgba(64,58,88,.5);
+}
+.cal-side{background:rgba(255,252,248,.72)}
+.btn{background:linear-gradient(135deg,#6C79B6,#98A2D6);color:#fff}
+.btn:hover{background:linear-gradient(135deg,#5C69A6,#8590C8)}
+.btn-accent{background:linear-gradient(135deg,#E9AB92,#D98C74);color:#fff}
+.btn-outline{border-color:rgba(43,47,76,.24);color:#3B405E}
+.qm-btn{background:linear-gradient(135deg,#6C79B6,#98A2D6);color:#fff}
+.qm-btn:hover{background:linear-gradient(135deg,#5C69A6,#8590C8)}
+.qm-panel .go{background:linear-gradient(135deg,#6C79B6,#98A2D6);color:#fff}
+.toast{background:linear-gradient(135deg,#4C527D,#6E77AE);color:#FBF8FF}
+.total-box{background:linear-gradient(135deg,#6C79B6,#8E9ACE);color:#FBF9FF}
+.day.range-start,.day.range-end,.day.sel{background:linear-gradient(135deg,#6C79B6,#98A2D6);color:#fff}
+.day.range-start .num,.day.range-end .num{color:#fff}
+.step.active .b{background:linear-gradient(135deg,#6C79B6,#98A2D6)}
+.seg button.on{background:linear-gradient(135deg,#6C79B6,#98A2D6);color:#fff}
+.model.sel .pick{background:linear-gradient(135deg,#6C79B6,#98A2D6);border-color:transparent;color:#fff}
+.faq-item.open .pm{background:linear-gradient(135deg,#6C79B6,#98A2D6);border-color:transparent;color:#fff}
+.line-band{background:linear-gradient(120deg,rgba(255,255,255,.66),rgba(250,226,212,.6))}
+.site-footer{background:linear-gradient(170deg,#3D3F60,#2C2E4C);color:#DCD8E6}
+.site-footer .foot-note{color:#A9A6BF}
+.model-art{background:linear-gradient(158deg,#C6CDE8,#F2D8CB)}
+.model-art img{filter:saturate(1.02)}
+.ticket .foot b,.coupon .off,.hero .kicker,.plans .price b{color:#5F6BA8}
+.page-hero{background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0))}
+.eyebrow,.kicker{color:#6C74A8}
+a{color:#5F6BA8}
+input,textarea,select{background:rgba(255,255,255,.78)}
+::selection{background:#F3C4AE;color:#2B2F4C}
+
+/* V4.1 — 主視覺暖化、日曆對比 */
+.stage-photo{filter:sepia(.18) hue-rotate(-16deg) saturate(.92) brightness(1.06)}
+.stage-shade{background:linear-gradient(180deg,rgba(70,66,104,.02) 34%,rgba(120,86,90,.32) 100%)}
+.day{color:#3A3F5E}
+.day .num{color:#3A3F5E}
+.day.past .num{color:#BFBCCB}
+.day.full .num{color:#B48A80}
+.cal-dow{color:#7A80A0}
+@media(max-width:720px){.topbar .wrap>div:first-child{font-size:10px}}
+
+
+/* V4.2 — 主視覺文字對比、FAQ 版面 */
+.stage-top{display:none}
+.stage-shade{background:linear-gradient(180deg,rgba(70,66,104,0) 38%,rgba(104,78,96,.26) 100%)}
+.stage-bottom{color:#2F2B44}
+.stage-bottom .k{color:rgba(47,43,68,.68);opacity:1}
+.stage-bottom .t{color:#2A2740;text-shadow:0 1px 14px rgba(255,255,255,.5)}
+.stage-bottom{text-shadow:0 1px 14px rgba(255,255,255,.45)}
+
+.stage-inner{justify-content:flex-end;padding-bottom:36px}
+@media(max-width:720px){.stage-inner{padding-bottom:22px}}
+
+/* V5 — 首頁主視覺照片移除，改為單欄文字版型 */
+.hero{padding:66px 0 58px}
+.hero .wrap{grid-template-columns:minmax(0,1fr);gap:0;max-width:1120px}
+.hero h1{font-size:clamp(38px,4.9vw,64px);max-width:15em}
+.hero .lede{max-width:36em;font-size:16px}
+.hero-meta{margin-top:34px}
+@media(max-width:720px){
+  .hero{padding:40px 0 34px}
+  .hero h1{font-size:34px}
+  .hero .lede{font-size:14.5px}
+}
+.brand-mark{font-size:13px;letter-spacing:0;line-height:1}
