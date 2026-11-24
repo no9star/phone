@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>內容管理｜玖號追星日常 NO.9</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  body{padding-bottom:80px}
+  .adm{width:min(100% - 40px,1040px);margin:0 auto}
+  .adm-head{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(46,49,85,.12)}
+  .adm-head .adm{display:flex;align-items:center;gap:16px;padding:14px 0;flex-wrap:wrap}
+  .adm-head h1{font-size:18px;letter-spacing:.08em}
+  .adm-head .grow{flex:1}
+  .adm-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 6px}
+  .adm-tabs button{border:1px solid rgba(46,49,85,.18);background:rgba(255,255,255,.5);padding:7px 14px;border-radius:999px;font-size:12.5px}
+  .adm-tabs button.on{background:#5F549F;color:#fff;border-color:#5F549F}
+  .card{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.8);border-radius:12px;padding:24px;margin:14px 0;box-shadow:0 18px 40px -32px rgba(46,49,85,.5)}
+  .card h2{font-size:17px;margin-bottom:4px}
+  .card .sub{font-size:12px;color:#6F7393;margin-bottom:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+  .f{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+  .f label{font-size:11.5px;color:#5A5E80;letter-spacing:.04em}
+  .f input,.f textarea,.f select{width:100%;padding:9px 11px;border:1px solid rgba(46,49,85,.2);border-radius:6px;background:rgba(255,255,255,.75);font:inherit;font-size:13px;color:#2E3155}
+  .f textarea{min-height:64px;resize:vertical}
+  .f .hint{font-size:10.5px;color:#878BA8}
+  .row-card{border:1px dashed rgba(46,49,85,.22);border-radius:8px;padding:14px;margin-bottom:12px;background:rgba(255,255,255,.4)}
+  .row-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .row-head b{font-size:13px}
+  .mini{border:1px solid rgba(46,49,85,.2);background:transparent;border-radius:5px;padding:5px 10px;font-size:11.5px}
+  .mini.del{color:#A8576B;border-color:rgba(168,87,107,.35)}
+  .add{width:100%;border:1px dashed rgba(46,49,85,.3);background:transparent;border-radius:8px;padding:11px;font-size:12.5px;color:#5F549F}
+  .savebar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-top:1px solid rgba(46,49,85,.12);padding:12px 0}
+  .savebar .adm{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .savebar .msg{font-size:12px;color:#5A5E80;flex:1}
+  .thumb{width:56px;height:68px;object-fit:cover;border-radius:6px;border:1px solid rgba(46,49,85,.15);background:#EEEAF8}
+  .m-thumb{display:flex;gap:10px;align-items:center}
+  .stock-list{font-size:12px;color:#4F5378;margin-top:8px;line-height:1.9}
+  .stock-list code{font-family:var(--mono);background:#EFEBFA;padding:1px 5px;border-radius:3px}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="adm-head">
+  <div class="adm">
+    <a class="brand" href="index.html" style="flex:0 0 auto">
+      <span class="brand-mark" style="width:34px;height:34px;font-size:14px">Nº9</span>
+      <span class="brand-txt"><strong style="font-size:15px">內容管理</strong><span>NO.9</span></span>
+    </a>
+    <div class="grow"></div>
+    <a class="btn btn-sm btn-line" href="index.html" target="_blank">預覽網站</a>
+  </div>
+</div>
+
+<div class="adm">
+  <div class="adm-tabs" id="tabs">
+    <button data-tab="basic" class="on">品牌與聯絡</button>
+    <button data-tab="texts">首頁文字</button>
+    <button data-tab="models">機型與價格</button>
+    <button data-tab="stock">檔期庫存</button>
+    <button data-tab="faq">常見問題</button>
+    <button data-tab="coupons">優惠券</button>
+  </div>
+
+  <section class="card" data-panel="basic">
+    <h2>品牌與聯絡</h2>
+    <p class="sub">改這裡，全站頁首、頁尾、LINE 按鈕會一起更新。</p>
+    <div class="grid2">
+      <div class="f"><label>品牌名稱</label><input data-k="brand"></div>
+      <div class="f"><label>英文縮寫</label><input data-k="brandEn"></div>
+      <div class="f"><label>LINE 基本 ID</label><input data-k="lineId" placeholder="@491szcgy"></div>
+      <div class="f"><label>LINE 加入好友網址</label><input data-k="lineUrl"><span class="hint">https://line.me/R/ti/p/@你的ID</span></div>
+      <div class="f"><label>Email</label><input data-k="email"></div>
+      <div class="f"><label>面交地點</label><input data-k="meetPoint"></div>
+      <div class="f"><label>服務時間</label><input data-k="hours"></div>
+      <div class="f"><label>郵寄運費（元）</label><input data-k="shippingFee" type="number"></div>
+      <div class="f"><label>訂金（元）</label><input data-k="depositNow" type="number"></div>
+    </div>
+  </section>
+
+  <section class="card" data-panel="texts" hidden>
+    <h2>首頁文字</h2>
+    <p class="sub">主視覺、標語與方案說明，改完按下方儲存就會即時生效。</p>
+    <div class="f"><label>主標題</label><textarea data-k="heroTitle"></textarea></div>
+    <div class="f"><label>副標題</label><textarea data-k="heroLede"></textarea></div>
+    <div class="f"><label>上方小字（英文）</label><input data-k="kicker"></div>
+    <div class="f"><label>主視覺壓字</label><input data-k="heroQuote"></div>
+    <div class="f"><label>頁尾標語</label><input data-k="slogan"></div>
+    <div class="f"><label>方案下方說明</label><textarea data-k="plansNote"></textarea></div>
+  </section>
+
+  <section class="card" data-panel="models" hidden>
+    <h2>機型與價格</h2>
+    <p class="sub">可新增、刪除機型，修改價格、押金、庫存與圖片。圖片建議正方形或 3:4，會自動裁切填滿。</p>
+    <div id="modelList"></div>
+    <button class="add" id="addModel" type="button">＋ 新增機型</button>
+  </section>
+
+  <section class="card" data-panel="stock" hidden>
+    <h2>檔期庫存</h2>
+    <p class="sub">系統會自動用「機型庫存 − 已成立預約」計算；你也可以針對某段日期手動指定台數，手動設定優先。</p>
+    <div class="grid2">
+      <div class="f"><label>機型</label><select id="stockModel"></select></div>
+      <div class="f"><label>庫存台數</label><input id="stockQty" type="number" min="0" value="0"></div>
+      <div class="f"><label>開始日期</label><input id="stockFrom" type="date"></div>
+      <div class="f"><label>結束日期</label><input id="stockTo" type="date"></div>
+    </div>
+    <button class="btn btn-sm" id="applyStock" type="button">套用到這段日期</button>
+    <div class="stock-list" id="stockList"></div>
+  </section>
+
+  <section class="card" data-panel="faq" hidden>
+    <h2>常見問題</h2>
+    <p class="sub">首頁顯示前 6 題，Q&amp;A 頁顯示全部。可自由新增、修改、刪除。</p>
+    <div id="faqList"></div>
+    <button class="add" id="addFaq" type="button">＋ 新增問題</button>
+  </section>
+
+  <section class="card" data-panel="coupons" hidden>
+    <h2>優惠券</h2>
+    <p class="sub">折扣碼可自由設定，客人在確認頁輸入即可折抵。</p>
+    <div id="couponList"></div>
+    <button class="add" id="addCoupon" type="button">＋ 新增優惠券</button>
+  </section>
+
+  <div class="notice" style="margin:18px 0 90px">
+    <b>兩種儲存方式：</b><br>
+    ① 按下方「儲存並預覽」→ 只在你這台電腦／手機生效，適合先看效果。<br>
+    ② 按「下載 content.js」→ 上傳到 GitHub 的 <code>assets/js/content.js</code> 覆蓋 → 所有客人才會看到新內容。
+  </div>
+</div>
+
+<div class="savebar">
+  <div class="adm">
+    <button class="btn btn-sm" id="saveBtn" type="button">儲存並預覽</button>
+    <button class="btn btn-sm btn-line" id="downloadBtn" type="button">下載 content.js</button>
+    <button class="btn btn-sm btn-line" id="resetBtn" type="button">還原預設</button>
+    <span class="msg" id="msg">修改後記得儲存</span>
+  </div>
+</div>
+
+<script src="assets/js/content.js"></script>
+<script src="assets/js/admin.js"></script>
+</body>
+</html>
