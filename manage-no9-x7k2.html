@@ -53,6 +53,18 @@
   .lock-card .err{color:#C0705F;font-size:11.5px;min-height:16px;margin:8px 0 0}
   body.locked{overflow:hidden}
   body.locked .adm-head,body.locked .adm{visibility:hidden}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 12px}
+  .kpi{background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);border-radius:10px;padding:12px 14px}
+  .kpi .k{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:#7A80A0}
+  .kpi b{display:block;font-family:var(--serif);font-size:21px;letter-spacing:.02em;margin-top:4px}
+  .pbar{height:8px;border-radius:99px;background:rgba(43,47,76,.1);overflow:hidden;margin:6px 0 8px}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,#6C79B6,#E0A18A)}
+  .crm-note{width:100%;min-height:38px;border:1px solid rgba(43,47,76,.2);border-radius:6px;padding:7px 9px;font:inherit;font-size:12px;background:rgba(255,255,255,.8)}
+  table.crm{width:100%;border-collapse:collapse;font-size:12px}
+  table.crm th{text-align:left;font-size:10.5px;letter-spacing:.06em;color:#6C7090;font-weight:500;padding:7px 8px;border-bottom:1px solid rgba(43,47,76,.12)}
+  table.crm td{padding:8px;border-bottom:1px solid rgba(43,47,76,.07);vertical-align:top}
+  table.crm tr:hover td{background:rgba(255,255,255,.5)}
+  @media(max-width:860px){.kpis{grid-template-columns:1fr 1fr}table.crm th:nth-child(4),table.crm td:nth-child(4){display:none}}
 </style>
 </head>
 <body class="locked">
@@ -87,6 +99,8 @@
     <button data-tab="stock">檔期庫存</button>
     <button data-tab="faq">常見問題</button>
     <button data-tab="coupons">優惠券</button>
+    <button data-tab="views">演唱會視角</button>
+    <button data-tab="crm">顧客與成本</button>
   </div>
 
   <section class="card" data-panel="basic">
@@ -148,6 +162,24 @@
     <p class="sub">折扣碼可自由設定，客人在確認頁輸入即可折抵。</p>
     <div id="couponList"></div>
     <button class="add" id="addCoupon" type="button">＋ 新增優惠券</button>
+  </section>
+
+  <section class="card" data-panel="views" hidden>
+    <h2>演唱會視角</h2>
+    <p class="sub">新增一段座位實拍：貼上 YouTube 網址就會自動抓縮圖。留空的話卡片會顯示「影片準備中」。</p>
+    <div id="viewList"></div>
+    <button class="add" id="addView" type="button">＋ 新增視角</button>
+  </section>
+
+  <section class="card" data-panel="crm" hidden>
+    <h2>顧客與成本</h2>
+    <p class="sub">顧客名單來自這台裝置的預約紀錄；成本設定用來計算回本進度。</p>
+    <div id="crmDash"></div>
+    <div id="crmCost"></div>
+    <h3 style="font-size:15px;margin:26px 0 4px">顧客名單</h3>
+    <p class="sub" style="margin-bottom:10px">同一支手機的多次預約會合併成一列，備註存在 content 裡，下載上傳後所有裝置都看得到。</p>
+    <div class="f" style="max-width:280px"><input id="crmSearch" placeholder="搜尋姓名／電話／LINE"></div>
+    <div id="crmList"></div>
   </section>
 
   <div class="notice" style="margin:18px 0 90px">
